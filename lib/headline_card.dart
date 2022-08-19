@@ -67,7 +67,7 @@ class _HeadlinecardState extends State<Headlinecard> {
                     await fetchealine();
                   },
                   child: ListView.builder(
-                      itemCount: 50,
+                      itemCount: 35,
                       itemBuilder: ((context, index) {
                         final articalSpec = newsArti[index];
                         String date = articalSpec['publishedAt'];
@@ -84,7 +84,7 @@ class _HeadlinecardState extends State<Headlinecard> {
                           },
                           child: Container(
                             margin: const EdgeInsets.all(10),
-                            height: size.height / 3 - 50,
+                            height: size.height / 3 - 40,
                             width: size.width,
                             child: Card(
                               clipBehavior: Clip.antiAlias,
@@ -110,12 +110,15 @@ class _HeadlinecardState extends State<Headlinecard> {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          articalSpec['title'],
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'RobotoSlab',
-                                              fontSize: 20),
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Text(
+                                            articalSpec['title'],
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'RobotoSlab',
+                                                fontSize: 20),
+                                          ),
                                         ),
                                       ),
                                       Row(
