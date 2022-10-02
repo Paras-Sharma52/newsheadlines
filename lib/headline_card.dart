@@ -14,6 +14,7 @@ class Headlinecard extends StatefulWidget {
 
 class _HeadlinecardState extends State<Headlinecard> {
   var waiting = false;
+  var noConnection = false;
   Future<void> fetchealine() async {
     final url = Uri.parse(
       "https://newsapi.org/v2/everything?q=Apple&from=2022-09-21&sortBy=popularity&apiKey=d36156747a7d4d268e9d84d43886c735",
@@ -29,9 +30,13 @@ class _HeadlinecardState extends State<Headlinecard> {
         info();
         setState(() {
           waiting = true;
+          print(waiting);
         });
       }
     } catch (e) {
+      setState(() {
+        noConnection = true;
+      });
       return print('noresponce');
     }
   }
@@ -46,7 +51,6 @@ class _HeadlinecardState extends State<Headlinecard> {
       var resBody = await userarticles['articles'];
 
       // print(userarticles['articles']);
-      print(waiting);
       return resBody;
     } catch (e) {
       print('data not available');
@@ -71,7 +75,7 @@ class _HeadlinecardState extends State<Headlinecard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return waiting
+    return waiting || noConnection
         ? FutureBuilder(
             future: info(),
             builder: ((context, AsyncSnapshot<dynamic> snapshot) {
@@ -92,19 +96,19 @@ class _HeadlinecardState extends State<Headlinecard> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Text(
-                                    'No internet',
+                                    'No Data',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   ElevatedButton.icon(
-                                    onPressed: () async {
+                                    onPressed: () {
                                       setState(() {
                                         snapshot.data == null
-                                            ? const Center(
+                                            ? fetchealine()
+                                            : const Center(
                                                 child:
                                                     CircularProgressIndicator(
                                                 color: Colors.white,
-                                              ))
-                                            : info();
+                                              ));
                                       });
                                     },
                                     icon: const Icon(Icons.refresh),
